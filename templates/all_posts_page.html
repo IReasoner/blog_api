@@ -1,0 +1,79 @@
+{% extends "layout_all_page.html" %}
+{% block content %}
+  <div class="posts-page">
+    <!-- PAGE HEADER -->
+    <section class="posts-top-section">
+        <div class="posts-heading-area">
+            <h1 class="posts-main-heading">
+                Latest Posts
+            </h1>
+            <p class="posts-sub-heading">
+                Explore thoughts, ideas and discussions from different authors.
+            </p>
+        </div>
+    </section>
+    <!-- POSTS CONTAINER -->
+    <section class="posts-list-container">
+
+      {% for c in posts %}
+        <article class="post-card">
+            <!-- AUTHOR SECTION -->
+            <div class="post-author-section">
+                <div class="post-author-profile">
+                    <img
+                        class="post-author-profile-image"
+                        src="{{url_for("media", path="profile_pics/Gojo satoru.jpeg")}}"
+                        alt="author profile"
+                    >
+                </div>
+
+                <div class="post-author-details">
+                    <a class="post-author-name"
+                       href="{{ url_for('all_get', user_id=c.user_id) }}">
+                       {{c.to_user.username}}
+                    </a>
+                    <p class="post-date">
+                        {{c.date_posted.strftime("%B %d, %Y")}}
+                    </p>
+
+                </div>
+
+            </div>
+            <!-- POST BODY -->
+            <div class="post-body">
+                <a class="post-title-link"
+                   href="{{ url_for('post_page', post_id=c.id ) }}">
+                    <h2 class="post-title">
+                        {{c.title}}
+                    </h2>
+                </a>
+                <p class="post-content">
+                    {{c.content}}
+                </p>
+            </div>
+
+        </article>
+        {% endfor %}
+
+    </section>
+
+</div>
+{% endblock content %}
+
+<!-- <div class="overall_container">
+
+    {% for c in posts %}
+  <div class="blog_container">
+    <div class="author">
+      <a href="{{ url_for( "all_get", user_id=c.user_id)}}">@{{c.to_user.username}}
+      </a>
+    </div>
+    <div class="title_content">
+      <p class="title"><a href="{{ url_for( "post_page", post_id=c.id ) }}">{{c.title}}</a></p>
+      <p class="content">{{c.content}}</p>
+    </div>
+    <div class="date">{{c.date_posted.strftime("%B %d, %Y")}}</div>
+  </div>
+
+  {% endfor %}
+  </div> -->

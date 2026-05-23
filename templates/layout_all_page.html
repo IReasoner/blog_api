@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    {% if title %}
+      Practice - {{title}}
+    {% else %}
+      Pratice - None
+    {%endif%}
+  </title>
+  <link rel="stylesheet" href="{{url_for("static", path="css/general_style.css")}}">
+  <link rel="stylesheet" href="{{url_for("static", path="css/sections_css.css")}}">
+  <link rel="stylesheet" href="{{url_for("static", path="css/post_edit_ai.css")}}">
+  <link rel="stylesheet" href="{{url_for("static", path="css/login_register_ai.css")}}">
+  <link rel="stylesheet" href="{{url_for("static", path="css/header_style_ai.css")}}">
+  <link rel="stylesheet" href="{{url_for("static", path="css/all_post_page_ai.css")}}">
+  <link rel="stylesheet" href="{{url_for("static", path="css/account_page_ai.css")}}">
+</head>
+<body>
+  <header class="header">
+  <!-- Left -->
+  <div class="header-left">
+    <a class="logo-link" href="{{url_for('home')}}">
+      IREASONER PRACTICE
+    </a>
+  </div>
+
+  <!-- Center Navigation -->
+  <nav class="header-center">
+    <a class="nav-link" href="{{url_for('home')}}">
+      Home
+    </a>
+  </nav>
+
+  <!-- Right Buttons -->
+  <div class="header-right">
+
+      <button class="new-post-button js-create-new-post">
+        + New Post
+      </button>
+
+      <a href="{{url_for('load_account_page')}}" class="me">
+      <div class="user-email js-user-email">
+        me@gmail.com
+      </div>
+       </a>
+  
+    <a href="{{url_for('load_login_page')}}">
+      <button class="auth-button login-button js-login-button">
+        Login
+      </button>
+    </a>
+
+    <a href="{{url_for('load_register_page')}}">
+      <button class="auth-button register-button js-register-button">
+        Register
+      </button>
+    </a>
+  </div>
+</header>
+
+  {% if dont_show_div %}
+    <div class="normal">
+  {% else %}
+    <div class="js-all-body-pages">
+  {% endif %}
+
+  {% block content%} {%endblock content%}
+    </div>
+
+  <div class="over-all-wrapper js-over-all-wrapper hide">
+
+    <div class="wrapper">
+        <h2>Create Post</h2>
+
+    <form class="postForm form-create">
+        <input type="text" name="title" class="title-form" placeholder="Title" required>
+        <input type="text" name="content" class="content-form" placeholder="Content" required>
+        <button type="submit">Submit</button>
+    </form>
+    <button class="cancel js-cancel-home">Cancel</button>
+    </div>
+</div>
+
+<script src="{{url_for("static", path="script/main.js")}}", type="module"></script>
+
+</body>
+</html>

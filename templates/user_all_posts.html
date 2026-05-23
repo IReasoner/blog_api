@@ -1,0 +1,47 @@
+{% extends "layout_all_page.html" %}
+{% block content %}
+<section class="posts-list-container">
+
+      {% for c in posts %}
+        <article class="post-card">
+            <!-- AUTHOR SECTION -->
+            <div class="post-author-section">
+                <div class="post-author-profile">
+                    <img
+                        class="post-author-profile-image"
+                        src="{{url_for("media", path="profile_pics/Gojo satoru.jpeg")}}"
+                        alt="author profile"
+                    >
+                </div>
+
+                <div class="post-author-details">
+                    <a class="post-author-name"
+                       href="#">
+                       {{c.to_user.username}}
+                    </a>
+                    <p class="post-date">
+                        {{c.date_posted.strftime("%B %d, %Y")}}
+                    </p>
+
+                </div>
+
+            </div>
+            <!-- POST BODY -->
+            <div class="post-body">
+                <a class="post-title-link"
+                   href="{{ url_for('post_page', post_id=c.id ) }}">
+                    <h2 class="post-title">
+                        {{c.title}}
+                    </h2>
+                </a>
+                <p class="post-content">
+                    {{c.content}}
+                </p>
+            </div>
+
+        </article>
+        {% endfor %}
+
+    </section>
+
+{% endblock content %}

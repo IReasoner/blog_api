@@ -1,0 +1,68 @@
+
+/* SINGLE POST PAGE STYLING ONLY */
+
+.blog_container_post {
+  border: 1px solid black;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.author_post {
+  height: 30px;
+  /* text-align: center; */
+  background-color: aqua;
+  margin-bottom: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: 900;
+}
+
+.title_content_post {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 80%;
+}
+
+.edit_delete {
+  /* border: 1px solid red; */
+  margin-top: 20px;
+  width: 170px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.edit_delete button {
+  height: 30px;
+  width: 70px;
+  cursor: pointer;
+}
+
+/* ERROR MESSAGING PAGE SYTLING */
+
+.error-container {
+    border: 2px solid aqua;
+    background-color: gainsboro;
+    width: 500px;
+    height: 100px;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  .error-container p {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 20px;
+  }

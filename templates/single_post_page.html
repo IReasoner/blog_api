@@ -1,0 +1,32 @@
+{% extends "layout_all_page.html" %}
+{% block content %}
+  <div class="blog_container_post js-blog" data-post-id={{c.id}} data-user-id="{{c.to_user.id}}">
+    <div class="author_post">@{{c.to_user.username}}</div>
+    <div class="title_content_post">
+      <p class="title js-title-f">{{c.title}}</p>
+      <p class="content js-content-f">{{c.content}}</p>
+    </div>
+    <div class="date">{{c.date_posted.strftime("%B %d, %Y")}}</div>
+    <div class="edit_delete js-edit-delete">
+      <button class="edit_button js-edit-button">Edit post</button>
+      <button class="delete js-delete-button">Delete</button>
+    </div>
+  </div>
+
+  <div class="over-all-wrapper-edit js-all-wrapper-edit hide">
+
+    <div class="wrapper js-edit-container">
+        <h2>Edit Post</h2>
+
+    <form class="editPostForm form-create">
+        <input type="text" name="title" class="title-form js-title" placeholder="Title" required>
+        <input type="text" name="content" class="content-form js-content" placeholder="Content" required>
+        <button type="submit">Save</button>
+    </form>
+     <button class="cancel js-cancel-edit">Cancel</button>
+    </div>
+  </div>
+
+  <script src="{{url_for("static", path="script/single_post.js")}}", type="module"></script>
+
+  {% endblock content %}

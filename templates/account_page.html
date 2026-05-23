@@ -1,0 +1,173 @@
+{% extends "layout_all_page.html" %}
+
+{% block content %}
+
+<div class="account-page">
+
+    <div class="account-container">
+
+        <h1 class="account-title">
+            Account Settings
+        </h1>
+
+        <p class="account-subtitle">
+            Manage your profile information and account settings.
+        </p>
+
+        <!-- PROFILE IMAGE SECTION -->
+
+        <section class="account-card">
+
+            <h2 class="section-title">
+                Profile Image
+            </h2>
+
+            <div class="profile-upload-container">
+
+                <!-- PREVIEW -->
+
+                <div class="image-preview-container">
+
+                    <img
+                        class="js-profile-preview profile-preview-image"
+                        alt="profile image"
+                    >
+
+                </div>
+
+                <div class="upload-area">
+
+                    <label class="upload-input-label">
+
+                        Choose Image
+
+                        <input
+                            type="file"
+                            accept="image/*"
+                            class="js-image-input hidden-input"
+                        >
+
+                    </label>
+
+                    <p class="upload-instruction">
+                        Image should not exceed <strong>5MB</strong>
+                    </p>
+
+                    <button
+                        class="upload-image-button js-upload-image-button"
+                        disabled>
+
+                        Upload Image
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- PROFILE DETAILS -->
+
+        <section class="account-card">
+
+            <h2 class="section-title">
+
+                Profile Information
+
+            </h2>
+
+
+            <form class="profile-form">
+
+                <div class="form-group">
+
+                    <label>
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        class="profile-input js-username"
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        class="profile-input js-email"
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="update-profile-button js-update-profile"
+                    disabled>
+
+                    Update Profile
+
+                </button>
+
+            </form>
+
+        </section>
+
+        <!-- LOGOUT SECTION -->
+
+      <section class="account-card">
+          <h2 class="section-title">
+              Session
+
+          </h2>
+          <p class="logout-text">
+              Sign out from your current account on this device.
+          </p>
+          <button class="logout-account-button js-log-out">
+
+              Logout
+
+          </button>
+
+      </section>
+
+        <!-- DELETE ACCOUNT -->
+
+        <section class="account-card delete-card">
+
+            <h2 class="section-title">
+
+                Delete Account
+
+            </h2>
+
+            <p class="delete-warning">
+
+                Warning: deleting your account is permanent.
+                Your profile, posts and account data
+                cannot be restored.
+
+            </p>
+
+            <button class="delete-account-button">
+
+                Delete Account
+
+            </button>
+
+        </section>
+
+    </div>
+
+</div>
+ 
+
+ <script src="{{url_for("static", path="script/account_page.js")}}", type="module"></script>
+
+{% endblock content %}
