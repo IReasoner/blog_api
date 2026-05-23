@@ -50,8 +50,8 @@ body {
 } */
 
 .hide {
-    display: none;
-}
+    display: none !important;
+} 
 
 .show-flex {
     display: flex;
@@ -64,3 +64,5 @@ body {
 .show-block {
     display: block;
 }
+
+

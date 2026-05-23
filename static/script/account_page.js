@@ -7,6 +7,7 @@ const username = document.querySelector(".js-username");
 const email = document.querySelector(".js-email");
 const updateProfileButton = document.querySelector(".js-update-profile");
 const logOutButton = document.querySelector(".js-log-out");
+const deleteAccountButton = document.querySelector(".js-delete-account-button");
 
 
 let currentUser = null;
@@ -54,7 +55,42 @@ imageInput.addEventListener("change", () => {
  uploadImageButton.addEventListener("click", async (e) => {
   e.preventDefault()
 
+  const file = imageInput.files[0];
   
+  if (!file) return
+
+  const formData = new FormData()
+  formData.append("image", file)
+
+  const token = getAcessToken()
+  const currentUserId = Number(currentUser.id);
+
+  try {
+
+    const response = await fetch(`/api/users/${currentUserId}/picture`, {
+    method: "PATCH",
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+      body: formData
+    })
+
+    if (!response.ok) {
+
+      console.log(await response.json())
+      return
+    }
+
+    alert("Profile image changed succefully")
+    location.reload()
+
+  } catch(error) {
+    console.log("Please check your internet connection")
+    alert("Please check your internet connection")
+  }
+  
+
+
  })
 
 
@@ -71,11 +107,8 @@ imageInput.addEventListener("change", () => {
     username: username.value,
     email: email.value
   }
-
-  console.log(JSON.stringify(changed))
   
   const currentUserId = Number(currentUser.id);
-  console.log(currentUserId)
 
   try {
 
@@ -126,12 +159,46 @@ email.addEventListener("input", checkChanges);
 
 
 
-  logOutButton.addEventListener('click', () => {
+logOutButton.addEventListener('click', () => {
 
-    removeAcessToken();
-    location.href = "/"
+  removeAcessToken();
+  location.href = "/"
 
-  })
+})
+
+
+deleteAccountButton.addEventListener("click", async (e) => {
+  e.preventDefault()
+
+  const token = getAcessToken()
+  const currentUserId = Number(currentUser.id);
+
+  try {
+
+    const response = await fetch(`/api/users/${currentUserId}`, {
+    method: "DELETE",
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    }
+    })
+
+    if (!response.ok) {
+      console.log(await response.json())
+      return
+    }
+
+    alert("Account succefully deleted")
+    removeAcessToken()
+    location.href = "/login"
+
+  } catch(error) {
+    console.log("Please check your internet connection")
+    alert("Please check your internet connection")
+  }
+  
+
+})
+
 
 }
 

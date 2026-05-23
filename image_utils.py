@@ -5,8 +5,8 @@ import uuid
 
 PROFILE_PICS_DIR = Path("media/profile_pics")
 
-def image_processing(content: bytes):
-  with Image.open(content) as Original:
+def image_processing(content: bytes) -> str:
+  with Image.open(BytesIO(content)) as Original:
     img = ImageOps.exif_transpose(Original)
 
   

@@ -1,164 +1,295 @@
+/* ========================= */
 /* HEADER */
+/* ========================= */
 
 .header{
-    height:70px;
-    padding:0 40px;
 
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+    height:70px;
+
+    padding:0 28px;
 
     background:white;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
 
     border-bottom:1px solid #e5e7eb;
 
     position: fixed;
+
     top:0;
     left: 0;
     right: 0;
 
     z-index:1000;
+
 }
 
-.me {
-    text-decoration: none;
-}
+
+
+/* ========================= */
 /* LEFT */
-
-.header-left{
-    display:flex;
-    align-items:center;
-}
+/* ========================= */
 
 .logo-link{
+
     text-decoration:none;
+
     font-size:22px;
+
     font-weight:bold;
+
     color:#111827;
 
-    letter-spacing:1px;
 }
 
 
+
+/* ========================= */
 /* CENTER */
+/* ========================= */
 
 .header-center{
+
     display:flex;
-    align-items:center;
-    gap:20px;
+
+    gap:25px;
+
 }
 
 .nav-link{
+
     text-decoration:none;
-    color:#374151;
-    font-size:16px;
-    transition:0.2s;
+
+    color:#4b5563;
+
+    font-weight:500;
 }
 
 .nav-link:hover{
+
     color:#2563eb;
+
 }
 
 
+
+/* ========================= */
 /* RIGHT */
+/* ========================= */
 
 .header-right{
+
     display:flex;
+
     align-items:center;
+
     gap:12px;
+
 }
+
+
+
+/* ========================= */
+/* PROFILE */
+/* ========================= */
+
+.header-user{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    text-decoration:none;
+
+    padding:6px 10px;
+
+    border-radius:30px;
+
+    transition:.2s;
+
+}
+
+.header-user:hover{
+
+    background:#f3f4f6;
+
+}
+
+
+
+/* IMAGE */
+
+.header-user-image{
+
+    width:38px;
+
+    height:38px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    /* border:2px solid #2563eb; */
+    border:1px solid black;
+
+}
+
+
+
+/* USER DETAILS */
+
+.header-user-details{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    line-height:1.2;
+
+}
+
+
+
+/* USERNAME */
+
+.header-user-name{
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#111827;
+
+}
+
 
 
 /* EMAIL */
 
-.user-email{
-    padding:8px 14px;
-    background:#f3f4f6;
-    border-radius:20px;
+.header-user-email{
 
-    font-size:14px;
-    color:#374151;
+    font-size:11px;
+
+    color:#6b7280;
+
 }
 
 
+
+/* ========================= */
 /* BUTTONS */
-
-button{
-    border:none;
-    outline:none;
-    cursor:pointer;
-
-    transition:0.2s;
-}
-
-
-/* NEW POST */
+/* ========================= */
 
 .new-post-button{
-    padding:10px 18px;
+
+    border:none;
 
     background:#2563eb;
+
     color:white;
 
-    border-radius:8px;
+    padding:10px 16px;
+
+    border-radius:10px;
+
+    cursor:pointer;
 
     font-weight:bold;
+
 }
 
 .new-post-button:hover{
+
     background:#1d4ed8;
+
 }
 
 
-/* AUTH BUTTONS */
 
 .auth-button{
-    padding:10px 16px;
 
-    border-radius:8px;
+    border:none;
+
+    padding:10px 14px;
+
+    border-radius:10px;
+
+    cursor:pointer;
 
     font-weight:bold;
+
 }
 
 
-/* LOGIN */
 
 .login-button{
-    background:white;
-    border:1px solid #d1d5db;
-    color:#374151;
-}
 
-.login-button:hover{
     background:#f3f4f6;
+
 }
 
 
-/* REGISTER */
 
 .register-button{
+
     background:#111827;
-    color:white;
-}
 
-.register-button:hover{
-    background:#1f2937;
-}
-
-
-/* LOGOUT */
-
-.logout-button{
-    padding:10px 16px;
-
-    background:#ef4444;
     color:white;
 
-    border-radius:8px;
-
-    font-weight:bold;
 }
 
-.logout-button:hover{
-    background:#dc2626;
+
+
+/* ========================= */
+/* MOBILE */
+/* ========================= */
+
+@media(max-width:850px){
+
+    .header{
+
+        padding:15px;
+
+        height:auto;
+
+        flex-wrap:wrap;
+
+        gap:15px;
+
+    }
+
+}
+
+
+@media(max-width:550px){
+
+    /* hide email on small screens */
+
+    .header-user-email{
+
+        display:none;
+
+    }
+
+    .header-user-name{
+
+        font-size:13px;
+
+    }
+
+    .header-user-image{
+
+        width:34px;
+        height:34px;
+
+    }
+
 }

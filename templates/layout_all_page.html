@@ -19,47 +19,61 @@
   <link rel="stylesheet" href="{{url_for("static", path="css/account_page_ai.css")}}">
 </head>
 <body>
-  <header class="header">
-  <!-- Left -->
-  <div class="header-left">
-    <a class="logo-link" href="{{url_for('home')}}">
-      IREASONER PRACTICE
-    </a>
-  </div>
-
-  <!-- Center Navigation -->
-  <nav class="header-center">
-    <a class="nav-link" href="{{url_for('home')}}">
-      Home
-    </a>
-  </nav>
-
-  <!-- Right Buttons -->
-  <div class="header-right">
-
-      <button class="new-post-button js-create-new-post">
-        + New Post
-      </button>
-
-      <a href="{{url_for('load_account_page')}}" class="me">
-      <div class="user-email js-user-email">
-        me@gmail.com
-      </div>
-       </a>
   
-    <a href="{{url_for('load_login_page')}}">
-      <button class="auth-button login-button js-login-button">
-        Login
-      </button>
-    </a>
+  <header class="header">
+    <!-- LEFT -->
+    <div class="header-left">
+        <a href="{{url_for('home')}}"
+            class="logo-link">
+            IREASONER PRACTICE
+        </a>
+    </div>
+    <!-- CENTER -->
 
-    <a href="{{url_for('load_register_page')}}">
-      <button class="auth-button register-button js-register-button">
-        Register
-      </button>
-    </a>
-  </div>
+    <nav class="header-center">
+        <a href="{{url_for('home')}}" class="nav-link">
+            Home
+        </a>
+    </nav>
+
+    <!-- RIGHT -->
+
+      <div class="header-right">
+        <button class="new-post-button js-create-new-post">
+            + New Post
+        </button>
+
+        <!-- COMPACT USER -->
+
+        <a href="{{url_for('load_account_page')}}" class="header-user js-user-container">
+            <img
+                class="header-user-image js-user-img"
+                alt="profile"
+            >
+            <div class="header-user-details">
+                <span class="header-user-name js-user-username">
+                    <!-- IReasoner -->
+                </span>
+                <span class="header-user-email js-user-email">
+                    <!-- me@gmail.com -->
+                </span>
+            </div>
+        </a>
+
+        <a href="{{url_for('load_login_page')}}">
+            <button class="auth-button login-button js-login-button">
+                Login
+            </button>
+        </a>
+
+        <a href="{{url_for('load_register_page')}}">
+            <button class="auth-button register-button js-register-button">
+                Register
+            </button>
+        </a>
+    </div>
 </header>
+
 
   {% if dont_show_div %}
     <div class="normal">

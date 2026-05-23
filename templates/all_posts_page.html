@@ -22,7 +22,7 @@
                 <div class="post-author-profile">
                     <img
                         class="post-author-profile-image"
-                        src="{{url_for("media", path="profile_pics/Gojo satoru.jpeg")}}"
+                        src="{{c.to_user.image_url}}"
                         alt="author profile"
                     >
                 </div>
@@ -59,21 +59,3 @@
 
 </div>
 {% endblock content %}
-
-<!-- <div class="overall_container">
-
-    {% for c in posts %}
-  <div class="blog_container">
-    <div class="author">
-      <a href="{{ url_for( "all_get", user_id=c.user_id)}}">@{{c.to_user.username}}
-      </a>
-    </div>
-    <div class="title_content">
-      <p class="title"><a href="{{ url_for( "post_page", post_id=c.id ) }}">{{c.title}}</a></p>
-      <p class="content">{{c.content}}</p>
-    </div>
-    <div class="date">{{c.date_posted.strftime("%B %d, %Y")}}</div>
-  </div>
-
-  {% endfor %}
-  </div> -->

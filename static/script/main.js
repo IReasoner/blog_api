@@ -9,7 +9,7 @@ const containeredit = document.querySelector(".js-edit-container");
 const newPostBtn = document.querySelector(".js-create-new-post");
 const loggedInButton = document.querySelector(".js-login-button");
 const registrationButton = document.querySelector(".js-register-button");
-const userEmail = document.querySelector(".js-user-email");
+const userDetail = document.querySelector(".js-user-container");
 const toggle_div = document.querySelector(".js-all-body-pages")
 
 
@@ -149,8 +149,8 @@ function checkIfUserLogin() {
     newPostBtn.classList.add("hide")
     newPostBtn.classList.remove("show-initial")
 
-    userEmail.classList.add("hide")
-    userEmail.classList.remove("show-initial")
+    userDetail.classList.add("hide")
+    userDetail.classList.remove("show-initial")
 
     // SHOWING
     loggedInButton.classList.remove("hide")
@@ -170,8 +170,8 @@ function checkIfUserLogin() {
     newPostBtn.classList.remove("hide")
     newPostBtn.classList.add("show-initial")
 
-    userEmail.classList.remove("hide")
-    userEmail.classList.add("show-initial")
+    userDetail.classList.remove("hide")
+    userDetail.classList.add("show-initial")
 
     // HIDING
     loggedInButton.classList.add("hide")
@@ -198,5 +198,8 @@ async function loadUser() {
     return 
   }
 
-  userEmail.innerHTML = user.email
+  document.querySelector(".js-user-img").src = user.image_url
+  document.querySelector(".js-user-email").innerHTML = user.email
+  document.querySelector(".js-user-username").innerHTML = user.username
+
 }

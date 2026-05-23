@@ -1,4 +1,4 @@
-from fastapi import HTTPException, status, Depends, APIRouter
+from fastapi import HTTPException, status, Depends, APIRouter, UploadFile
 from typing import Annotated
 
 from database import get_db
@@ -6,11 +6,16 @@ from models import User, Post
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
+from starlette.concurrency import run_in_threadpool
+from io import BytesIO
+from config import settings
+from PIL import UnidentifiedImageError
 
 
 from schemas import PostResponse, UserCreate, UserPublicResponse, UserPrivateResponse, UpdateUser, Token
 from auth import hash_password, verify_password, create_access_token, currentUser
 from fastapi.security import OAuth2PasswordRequestForm
+from image_utils import delete_profile_image, image_processing
 
  
 
@@ -44,7 +49,7 @@ async def user_login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
   }
 
   
-
+# CREATE USER
 @router.post("/register", response_model=UserPrivateResponse, status_code=status.HTTP_201_CREATED)
 async def create_user(user: UserCreate, db: Annotated[AsyncSession, Depends(get_db)]):
 
@@ -129,10 +134,16 @@ async def delete_user(user_id: int, current_user: currentUser, db: Annotated[Asy
           detail="Not authorized to delete this user"
           )
   
+  old_filename = current_user.image_file
+  
   await db.delete(current_user)
   await db.commit()
 
+  if old_filename:
+    delete_profile_image(old_filename)
 
+
+# GET USERS ALL POST
 @router.get("/{user_id}/posts", response_model=list[PostResponse])
 async def get_user_post(user_id: int, db: Annotated[AsyncSession, Depends(get_db)]):
 
@@ -147,6 +158,8 @@ async def get_user_post(user_id: int, db: Annotated[AsyncSession, Depends(get_db
 
   return all_post
 
+
+# GET USERS DETAILS 
 @router.get("/{user_id}", response_model=UserPublicResponse)
 async def get_user(user_id: int, db: Annotated[AsyncSession, Depends(get_db)]):
   result = await db.execute(select(User).where(User.id == user_id))
@@ -156,3 +169,89 @@ async def get_user(user_id: int, db: Annotated[AsyncSession, Depends(get_db)]):
     return user
   
   raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="user not found")
+
+
+# UPDATING PROFILE IMAGE
+
+@router.patch("/{user_id}/picture", response_model=UserPrivateResponse)
+async def update_user_profile(
+  user_id: int,
+  current_user: currentUser,
+  image: UploadFile,
+  db: Annotated[AsyncSession, Depends(get_db)]
+  ):
+
+
+  if current_user.id != user_id:
+      raise HTTPException(
+          status_code=status.HTTP_403_FORBIDDEN, 
+          detail="Not authorized to update this users image"
+          )
+  
+  
+  content = await image.read()
+
+  if len(content) > settings.max_profile_image_size:
+    raise HTTPException(
+      status_code=status.HTTP_400_BAD_REQUEST,
+      detail=f"image should not execeed {settings.max_profile_image_size // 1024 // 1024}MB"
+    )
+  
+
+  try:
+    filename = await run_in_threadpool(image_processing, content)
+  except UnidentifiedImageError:
+    raise HTTPException(
+      status_code=status.HTTP_400_BAD_REQUEST,
+      detail="Invalid image"
+    )
+  except Exception:
+    raise
+
+
+  old_filename = current_user.image_file  
+  
+  current_user.image_file = filename # type: ignore
+  
+  await db.commit()
+  await db.refresh(current_user, attribute_names=["to_post"])
+
+  delete_profile_image(old_filename)
+
+  return current_user
+
+
+
+# DELETING USER PROFILE
+
+@router.delete("/{user_id}/picture", response_model=UserPrivateResponse)
+async def delete_user_profile(
+  user_id: int,
+  current_user: currentUser,
+  db: Annotated[AsyncSession, Depends(get_db)]
+  ):
+
+
+  if current_user.id != user_id:
+      raise HTTPException(
+          status_code=status.HTTP_403_FORBIDDEN, 
+          detail="Not authorized to delete this users image"
+          )
+
+  old_filename = current_user.image_file  
+
+  if old_filename is None:
+    raise HTTPException(
+          status_code=status.HTTP_404_NOT_FOUND, 
+          detail="no profile image to delete"
+          )
+  
+
+  current_user.image_file = None
+  
+  await db.commit()
+  await db.refresh(current_user, attribute_names=["to_post"])
+
+  delete_profile_image(old_filename)
+
+  return current_user

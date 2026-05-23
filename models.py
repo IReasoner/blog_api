@@ -20,8 +20,8 @@ class User(Base):
   @property
   def image_url(self):
     if self.image_file:
-      return f"media/profile_pics/{self.image_file}"
-    return f"media/profile_pics/default.jpeg"
+      return f"/media/profile_pics/{self.image_file}"
+    return f"/media/profile_pics/default.jpeg"
 
   to_post: Mapped[list[Post]] = relationship("Post", back_populates="to_user", cascade="all, delete-orphan")
   
