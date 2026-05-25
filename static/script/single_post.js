@@ -16,8 +16,6 @@ function checkUser() {
     editDeleteElement.style.display = "none"
   }
 
-  console.log(user)
-
 }
 
 checkUser()

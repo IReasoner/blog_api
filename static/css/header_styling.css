@@ -3,39 +3,23 @@
 /* ========================= */
 
 .header{
-
     height:70px;
-
     padding:0 28px;
-
     background:white;
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     border-bottom:1px solid #e5e7eb;
-
     position: fixed;
-
     top:0;
     left: 0;
     right: 0;
-
     z-index:1000;
-
 }
-
-
-
 /* ========================= */
 /* LEFT */
 /* ========================= */
-
-.logo-link{
-
+.logo-link-header {
     text-decoration:none;
 
     font-size:22px;
@@ -45,8 +29,6 @@
     color:#111827;
 
 }
-
-
 
 /* ========================= */
 /* CENTER */
@@ -60,7 +42,7 @@
 
 }
 
-.nav-link{
+.nav-link-header{
 
     text-decoration:none;
 
@@ -69,14 +51,11 @@
     font-weight:500;
 }
 
-.nav-link:hover{
+.nav-link-header:hover{
 
     color:#2563eb;
 
 }
-
-
-
 /* ========================= */
 /* RIGHT */
 /* ========================= */
@@ -90,8 +69,6 @@
     gap:12px;
 
 }
-
-
 
 /* ========================= */
 /* PROFILE */
@@ -120,9 +97,6 @@
     background:#f3f4f6;
 
 }
-
-
-
 /* IMAGE */
 
 .header-user-image{
@@ -140,8 +114,6 @@
 
 }
 
-
-
 /* USER DETAILS */
 
 .header-user-details{
@@ -156,8 +128,6 @@
 
 }
 
-
-
 /* USERNAME */
 
 .header-user-name{
@@ -170,8 +140,6 @@
 
 }
 
-
-
 /* EMAIL */
 
 .header-user-email{
@@ -181,9 +149,6 @@
     color:#6b7280;
 
 }
-
-
-
 /* ========================= */
 /* BUTTONS */
 /* ========================= */
@@ -212,9 +177,7 @@
 
 }
 
-
-
-.auth-button{
+.auth-button-header{
 
     border:none;
 
@@ -228,26 +191,19 @@
 
 }
 
-
-
-.login-button{
+.login-button-header{
 
     background:#f3f4f6;
 
 }
 
-
-
-.register-button{
+.register-button-header{
 
     background:#111827;
 
     color:white;
 
 }
-
-
-
 /* ========================= */
 /* MOBILE */
 /* ========================= */

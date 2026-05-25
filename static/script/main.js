@@ -3,9 +3,8 @@ import {getCurrentUser, getAcessToken} from "../script/auth.js"
 
 
 // ALL DEFINE ELEMENT FOR CREATE POST
-const form = document.querySelector(".postForm");
+const form = document.querySelector(".js-post-form");
 const homeWrapper = document.querySelector(".js-over-all-wrapper");
-const containeredit = document.querySelector(".js-edit-container");
 const newPostBtn = document.querySelector(".js-create-new-post");
 const loggedInButton = document.querySelector(".js-login-button");
 const registrationButton = document.querySelector(".js-register-button");
@@ -14,15 +13,14 @@ const toggle_div = document.querySelector(".js-all-body-pages")
 
 
 // GENERAL CODE
-let showEdit = false
 
 function toggle_edit(element) {
-    if (element.classList.contains("hide")) {
-      element.classList.remove("hide")
-      element.classList.add("show-flex")
+    if (element.classList.contains("hidden")) {
+      element.classList.remove("hidden")
+      element.classList.add("show-initial")
     } else {
-      element.classList.remove("show-flex")
-      element.classList.add("hide")
+      element.classList.remove("show-initial")
+      element.classList.add("hidden")
     } 
 }
 
@@ -33,24 +31,34 @@ function toggle_edit(element) {
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-
   const formData = new FormData(form)
   const dataObj = Object.fromEntries(formData); 
 
     const token = getAcessToken()
 
-    await fetch("http://127.0.0.1:8000/api/posts", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(dataObj)
-  });
+    try {
 
-  toggle_edit(homeWrapper)
-  form.reset();
-  location.reload()
+    const response = await fetch("/api/posts", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(dataObj)
+    });
+
+      if (!response.ok) {
+        return
+      }
+
+      alert("Post Uploaded")
+      toggle_edit(homeWrapper)
+      form.reset();
+      location.reload()
+
+    } catch(error) {
+       console.log("Something went wrong or check your internet connection")
+    }
 })
 
 
@@ -64,15 +72,13 @@ document.querySelector(".js-cancel-home").addEventListener("click", () => {
 
 
 // ALL DEFINE ELEMENT FOR EDIT POST
-const formedit = document.querySelector(".editPostForm");
+const formedit = document.querySelector(".js-edit-post");
 
 if (formedit) {
 
 const editWrapper = document.querySelector(".js-all-wrapper-edit");
 
-let currentID = null
-
-
+let postID = null
 
 // EDIT POST LOGIC
 // THE BEGIN OF ADVANCE STOPTING OF BAD RUN TWICE AND THREE TIMES
@@ -80,12 +86,11 @@ let currentID = null
 function editPost(id, title, content) {
 
   toggle_edit(editWrapper)
-  showEdit = true
   
-  currentID = id;
+  postID = id;
 
-  containeredit.querySelector(".js-title").value = title;
-  containeredit.querySelector(".js-content").value = content;
+  document.querySelector(".js-title").value = title;
+  document.querySelector(".js-content").value = content;
 
  }
 
@@ -96,18 +101,31 @@ function editPost(id, title, content) {
       const formData = new FormData(formedit)
       const dataObj = Object.fromEntries(formData); 
 
-        await fetch(`http://127.0.0.1:8000/api/posts/${currentID}`, {
+      const token = getAcessToken()
+
+      try {
+
+      const response = await fetch(`/api/posts/${postID}`, {
         method: "PATCH",
         headers: {
+          "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify(dataObj)
       })
 
+      if (!response.ok) {
+        return
+      }
 
+      alert("Post Edited")
       toggle_edit(editWrapper)
       formedit.reset();
       location.reload()
+
+      } catch(error) {
+        console.log("Something went wrong or check your internet connection")
+      }
   })
 
   // END OF THE LOGIC
@@ -117,23 +135,38 @@ function editPost(id, title, content) {
 
   document.querySelector(".js-edit-button").addEventListener("click", () => {
     
-    const blogContainer = document.querySelector(".blog_container_post")
-    const title = blogContainer.querySelector(".js-title-f").innerHTML;
-    const content = blogContainer.querySelector(".js-content-f").innerHTML;
+    const blogContainer = document.querySelector(".js-blog")
+    const title = blogContainer.querySelector(".js-title-f").innerText;
+    const content = blogContainer.querySelector(".js-content-f").innerText;
     const postID = blogContainer.dataset.postId;
     
     editPost(postID, title, content)
   })
 
   document.querySelector(".js-delete-button").addEventListener("click", async () => {
-    const blogContainer = document.querySelector(".blog_container_post")
+    const blogContainer = document.querySelector(".js-blog")
     const postID = blogContainer.dataset.postId;
 
-     await fetch(`http://127.0.0.1:8000/api/posts/${postID}`, {
-      method: "DELETE"
-      })
+    const token = getAcessToken()
 
+    try {
+      const response = await fetch(`/api/posts/${postID}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+     })
+
+      if (!response.ok) {
+        return
+      }
+
+      alert("Post Successfully Deleted")
       location.href = "/"
+
+    } catch(error) {
+      console.log("Something went wrong, or check your internet connection")
+    }
   })
 
   }

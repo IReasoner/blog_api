@@ -54,7 +54,7 @@ async def home(request: Request, db: Annotated[AsyncSession, Depends(get_db)]):
 
   return templates.TemplateResponse(
     request, 
-    "all_posts_page.html", 
+    "main_post_page.html", 
     {
       "posts": posts, 
       "title": "Home"
@@ -97,7 +97,7 @@ async def all_user_post_page(request: Request, user_id: int, db: Annotated[Async
 
   return templates.TemplateResponse(
     request, 
-    "user_all_posts.html", 
+    "user_post_page.html", 
     {
       "posts": all_post, 
       "title": f"{user.username}'s posts"

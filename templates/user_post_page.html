@@ -1,25 +1,25 @@
-{% extends "layout_all_page.html" %}
+{% extends "layout_page.html" %}
 {% block content %}
-<section class="posts-list-container">
+<section class="main-posts-list-container">
 
       {% for c in posts %}
-        <article class="post-card">
+        <article class="main-post-card">
             <!-- AUTHOR SECTION -->
-            <div class="post-author-section">
-                <div class="post-author-profile">
+            <div class="main-post-author-section">
+                <div class="main-post-author-profile">
                     <img
-                        class="post-author-profile-image"
+                        class="main-post-author-profile-image"
                         src="{{c.to_user.image_url}}"
                         alt="author profile"
                     >
                 </div>
 
-                <div class="post-author-details">
-                    <a class="post-author-name"
+                <div class="main-post-author-details">
+                    <a class="main-post-author-name"
                        href="#">
                        {{c.to_user.username}}
                     </a>
-                    <p class="post-date">
+                    <p class="main-post-date">
                         {{c.date_posted.strftime("%B %d, %Y")}}
                     </p>
 
@@ -27,14 +27,14 @@
 
             </div>
             <!-- POST BODY -->
-            <div class="post-body">
-                <a class="post-title-link"
+            <div class="main-post-body">
+                <a class="main-post-title-link"
                    href="{{ url_for('post_page', post_id=c.id ) }}">
-                    <h2 class="post-title">
+                    <h2 class="main-post-title">
                         {{c.title}}
                     </h2>
                 </a>
-                <p class="post-content">
+                <p class="main-post-content">
                     {{c.content}}
                 </p>
             </div>

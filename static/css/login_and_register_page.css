@@ -1,4 +1,4 @@
-.body-container {
+.login-body-container {
       background: #f4f7fb;
       padding: 40px;
       display: flex;
@@ -7,7 +7,7 @@
       align-items: center;
     }
 
-    .auth-container {
+    .login-auth-container {
       width: 100%;
       max-width: 420px;
       background: white;
@@ -16,25 +16,25 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
 
-    .auth-title {
+    .login-auth-title {
       text-align: center;
       margin-bottom: 25px;
       color: #333;
       font-size: 28px;
     }
 
-    .form-group {
+    .login-form-group {
       margin-bottom: 18px;
     }
 
-    .form-label {
+    .login-form-label {
       display: block;
       margin-bottom: 6px;
       color: #444;
       font-size: 14px;
     }
 
-    .form-input {
+    .login-form-input {
       width: 100%;
       padding: 12px;
       border: 1px solid #ccc;
@@ -44,11 +44,11 @@
       transition: 0.3s;
     }
 
-    .form-input:focus {
+    .login-form-input:focus {
       border-color: #2563eb;
     }
 
-    .form-button {
+    .login-form-button {
       width: 100%;
       padding: 12px;
       border: none;
@@ -60,11 +60,11 @@
       transition: 0.3s;
     }
 
-    .form-button:hover {
+    .login-form-button:hover {
       background: #1d4ed8;
     }
 
-    .success-message {
+    .login-success-message {
       margin-top: 15px;
       text-align: center;
       color: green;
@@ -76,7 +76,7 @@
         padding: 20px;
       }
 
-      .auth-container {
+      .login-auth-container {
         padding: 20px;
       }
     }

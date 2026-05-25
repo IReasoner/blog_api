@@ -1,31 +1,113 @@
-{% extends "layout_all_page.html" %}
+{% extends "layout_page.html" %}
 {% block content %}
-  <div class="blog_container_post js-blog" data-post-id={{c.id}} data-user-id="{{c.to_user.id}}">
-    <div class="author_post">@{{c.to_user.username}}</div>
-    <div class="title_content_post">
-      <p class="title js-title-f">{{c.title}}</p>
-      <p class="content js-content-f">{{c.content}}</p>
-    </div>
-    <div class="date">{{c.date_posted.strftime("%B %d, %Y")}}</div>
-    <div class="edit_delete js-edit-delete">
-      <button class="edit_button js-edit-button">Edit post</button>
-      <button class="delete js-delete-button">Delete</button>
-    </div>
-  </div>
+<article class="single-post-card js-blog" data-post-id="{{c.id}}" data-user-id="{{c.to_user.id}}">
+    <!-- POST CONTENT -->
+    <div class="single-post-content-area">
+        <!-- AUTHOR -->
+        <div class="single-post-author-row">
+            <div class="single-post-author-left">
+                <div class="single-post-author-profile">
+                    <img
+                        class="single-post-author-profile-image"
+                        src="{{c.to_user.image_url}}"
+                        alt="author profile"
+                    >
+                </div>
+                <div class="single-post-author-details">
+                    <a
+                       class="single-post-author-name"
+                       href="{{ url_for('all_get', user_id=c.user_id) }}">
+                       {{c.to_user.username}}
+                    </a>
+                    <p class="single-post-date">
+                       {{c.date_posted.strftime("%B %d, %Y")}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- TITLE -->
+        <a
+           class="single-post-title-link"
+           href="#">
+            <h2 class="single-post-title js-title-f">
+                {{c.title}}
+            </h2>
+        </a>
 
-  <div class="over-all-wrapper-edit js-all-wrapper-edit hide">
-
-    <div class="wrapper js-edit-container">
-        <h2>Edit Post</h2>
-
-    <form class="editPostForm form-create">
-        <input type="text" name="title" class="title-form js-title" placeholder="Title" required>
-        <input type="text" name="content" class="content-form js-content" placeholder="Content" required>
-        <button type="submit">Save</button>
-    </form>
-     <button class="cancel js-cancel-edit">Cancel</button>
+        <!-- CONTENT -->
+        <p class="single-post-description js-content-f">
+            {{c.content}}
+        </p>
+        <!-- ACTIONS -->
+        <div class="single-post-actions js-edit-delete">
+            <button class="single-post-edit-button js-edit-button">
+                Edit Post
+            </button>
+            <button class="single-post-delete-button js-delete-button">
+                Delete Post
+            </button>
+        </div>
     </div>
-  </div>
+</article>
+
+
+
+  <div class="create-post-overlay js-all-wrapper-edit hidden">
+
+        <!-- FORM CONTAINER -->
+        <div class="create-post-modal">
+            <!-- CLOSE BUTTON -->
+            <button class="close-modal-button js-cancel-edit">
+                ✕
+            </button>
+
+            <!-- TOP -->
+            <div class="create-post-top">
+                <h2 class="create-post-heading">
+                    Edit Created Post
+                </h2>
+                <p class="create-post-subheading">
+                    Share your thoughts with the community.
+                </p>
+            </div>
+
+            <!-- FORM -->
+            <form class="create-post-form js-edit-post">
+
+                <!-- TITLE -->
+                <div class="form-group-create-post">
+                    <label class="form-label-create-post">
+                        Post Title
+                    </label>
+                    <input
+                        type="text"
+                        name="title"
+                        class="post-input js-title"
+                        required
+                    >
+                </div>
+
+                <!-- CONTENT -->
+                <div class="form-group-create-post">
+                    <label class="form-label-create-post">
+                        Post Content
+                    </label>
+                    <textarea
+                        name="content"
+                        class="post-textarea js-content"
+                        required
+                    ></textarea>
+                </div>
+
+                <!-- SUBMIT -->
+                <button
+                    type="submit"
+                    class="submit-post-button">
+                    Publish Post
+                </button>
+            </form>
+        </div>
+    </div>
 
   <script src="{{url_for("static", path="script/single_post.js")}}", type="module"></script>
 

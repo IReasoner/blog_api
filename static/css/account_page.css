@@ -1,5 +1,5 @@
 .account-page{
-    padding:40px 20px;
+    padding:10px 20px;
 }
 
 .account-container{
@@ -35,7 +35,7 @@
     0 10px 30px rgba(0,0,0,.04);
 }
 
-.section-title{
+.account-section-title{
     margin-bottom:25px;
 }
 
@@ -72,7 +72,7 @@
     gap:15px;
 }
 
-.hidden-input{
+.account-hidden-input{
     display:none;
 }
 
@@ -120,19 +120,19 @@
 
 /* INPUTS */
 
-.profile-form{
+.account-profile-form{
     display:flex;
     flex-direction:column;
     gap:20px;
 }
 
-.form-group{
+.account-form-group{
     display:flex;
     flex-direction:column;
     gap:8px;
 }
 
-.profile-input{
+.account-profile-input{
     height:55px;
 
     border-radius:14px;
@@ -144,7 +144,7 @@
     outline:none;
 }
 
-.profile-input:focus{
+.account-profile-input:focus{
     border-color:#2563eb;
 }
 

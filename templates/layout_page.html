@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    {% if title %}
+      Practice - {{title}}
+    {% else %}
+      Pratice - None
+    {%endif%}
+  </title>
+  <link rel="stylesheet" href="{{url_for("static", path="css/general_styling.css")}}">
+  <link rel="stylesheet" href="{{url_for("static", path="css/header_styling.css")}}">
+  <link rel="stylesheet" href="{{url_for("static", path="css/upload_post_editing.css")}}">
+   <link rel="stylesheet" href="{{url_for("static", path="css/main_post_page.css")}}">
+    <link rel="stylesheet" href="{{url_for("static", path="css/account_page.css")}}">
+    <link rel="stylesheet" href="{{url_for("static", path="css/single_post_page.css")}}">
+    <link rel="stylesheet" href="{{url_for("static", path="css/login_and_register_page.css")}}">
+    <link rel="stylesheet" href="{{url_for("static", path="css/error_page.css")}}">
+</head>
+<body>
+  
+  <header class="header">
+    <!-- LEFT -->
+    <div class="header-left">
+        <a href="{{url_for('home')}}"
+            class="logo-link-header">
+            IREASONER PRACTICE
+        </a>
+    </div>
+    <!-- CENTER -->
+
+    <nav class="header-center">
+        <a href="{{url_for('home')}}" class="nav-link-header">
+            Home
+        </a>
+    </nav>
+
+    <!-- RIGHT -->
+
+      <div class="header-right">
+        <button class="new-post-button js-create-new-post">
+            + New Post
+        </button>
+
+        <!-- COMPACT USER -->
+
+        <a href="{{url_for('load_account_page')}}" class="header-user js-user-container">
+            <img
+                class="header-user-image js-user-img"
+                alt="profile"
+            >
+            <div class="header-user-details">
+                <span class="header-user-name js-user-username">
+                    <!-- IReasoner -->
+                </span>
+                <span class="header-user-email js-user-email">
+                    <!-- me@gmail.com -->
+                </span>
+            </div>
+        </a>
+
+        <a href="{{url_for('load_login_page')}}">
+            <button class="auth-button-header login-button-header js-login-button">
+                Login
+            </button>
+        </a>
+
+        <a href="{{url_for('load_register_page')}}">
+            <button class="auth-button-header register-button-header js-register-button">
+                Register
+            </button>
+        </a>
+    </div>
+</header>
+
+
+  {% if dont_show_div %}
+    <div class="normal">
+  {% else %}
+    <div class="js-all-body-pages">
+  {% endif %}
+
+  {% block content%} {%endblock content%}
+    </div>
+
+
+    <!-- CREATE POST MODAL -->
+    <div class="create-post-overlay js-over-all-wrapper hidden">
+
+        <!-- FORM CONTAINER -->
+        <div class="create-post-modal">
+            <!-- CLOSE BUTTON -->
+            <button class="close-modal-button js-cancel-home">
+                ✕
+            </button>
+
+            <!-- TOP -->
+            <div class="create-post-top">
+                <h2 class="create-post-heading">
+                    Create New Post
+                </h2>
+                <p class="create-post-subheading">
+                    Share your thoughts with the community.
+                </p>
+            </div>
+
+            <!-- FORM -->
+            <form class="create-post-form js-post-form">
+
+                <!-- TITLE -->
+                <div class="form-group-create-post">
+                    <label class="form-label-create-post">
+                        Post Title
+                    </label>
+                    <input
+                        type="text"
+                        name="title"
+                        class="post-input"
+                        placeholder="Enter post title"
+                        required
+                    >
+                </div>
+
+                <!-- CONTENT -->
+                <div class="form-group-create-post">
+                    <label class="form-label-create-post">
+                        Post Content
+                    </label>
+                    <textarea
+                        name="content"
+                        class="post-textarea"
+                        placeholder="Write your content here..."
+                        required
+                    ></textarea>
+                </div>
+
+                <!-- SUBMIT -->
+                <button
+                    type="submit"
+                    class="submit-post-button">
+                    Publish Post
+                </button>
+            </form>
+        </div>
+    </div>
+
+<script src="{{url_for("static", path="script/main.js")}}", type="module"></script>
+
+</body>
+</html>

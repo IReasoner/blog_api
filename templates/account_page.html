@@ -1,4 +1,4 @@
-{% extends "layout_all_page.html" %}
+{% extends "layout_page.html" %}
 
 {% block content %}
 
@@ -23,30 +23,23 @@
             </h2>
 
             <div class="profile-upload-container">
-
                 <!-- PREVIEW -->
-
                 <div class="image-preview-container">
 
                     <img
                         class="js-profile-preview profile-preview-image"
                         alt="profile image"
                     >
-
                 </div>
 
                 <div class="upload-area">
-
                     <label class="upload-input-label">
-
                         Choose Image
-
                         <input
                             type="file"
                             accept="image/*"
-                            class="js-image-input hidden-input"
+                            class="js-image-input account-hidden-input"
                         >
-
                     </label>
 
                     <p class="upload-instruction">
@@ -71,16 +64,16 @@
 
         <section class="account-card">
 
-            <h2 class="section-title">
+            <h2 class="account-section-title">
 
                 Profile Information
 
             </h2>
 
 
-            <form class="profile-form">
+            <form class="account-profile-form">
 
-                <div class="form-group">
+                <div class="account-form-group">
 
                     <label>
                         Username
@@ -88,12 +81,12 @@
 
                     <input
                         type="text"
-                        class="profile-input js-username"
+                        class="account-profile-input js-username"
                     >
 
                 </div>
 
-                <div class="form-group">
+                <div class="account-form-group">
 
                     <label>
                         Email
@@ -101,7 +94,7 @@
 
                     <input
                         type="email"
-                        class="profile-input js-email"
+                        class="account-profile-input js-email"
                     >
 
                 </div>
@@ -122,7 +115,7 @@
         <!-- LOGOUT SECTION -->
 
       <section class="account-card">
-          <h2 class="section-title">
+          <h2 class="account-section-title">
               Session
 
           </h2>
@@ -141,7 +134,7 @@
 
         <section class="account-card delete-card">
 
-            <h2 class="section-title">
+            <h2 class="account-section-title">
 
                 Delete Account
 

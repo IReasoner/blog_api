@@ -44,7 +44,6 @@ class PostCreate(BaseModel):
 class PostUpdate(BaseModel):
   title: str | None = Field(default=None, min_length=1)
   content: str | None = Field(default=None, min_length=1)
-  # user_id: int | None # TEMPORARY 
 
 
 class PostResponse(BaseModel):

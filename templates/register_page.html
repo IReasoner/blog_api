@@ -1,46 +1,46 @@
-{% extends "layout_all_page.html" %}
+{% extends "layout_page.html" %}
 {% block content%}
-<div class="body-container">
-  <section class="auth-container">
-    <h2 class="auth-title">Register</h2>
+<div class="login-body-container">
+  <section class="login-auth-container">
+    <h2 class="login-auth-title">Register</h2>
 
     <form class="js-register-form">
-      <div class="form-group">
-        <label class="form-label">Username</label>
+      <div class="login-form-group">
+        <label class="login-form-label">Username</label>
         <input
           type="text"
-          class="form-input js-register-username"
+          class="login-form-input js-register-username"
           placeholder="Enter your username"
           required
         />
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Email</label>
+      <div class="login-form-group">
+        <label class="login-form-label">Email</label>
         <input
           type="email"
-          class="form-input js-register-email"
+          class="login-form-input js-register-email"
           placeholder="Enter your email"
           required
         />
       </div>
 
-      <div class="form-group">
+      <div class="login-form-group">
         <label class="form-label">Password</label>
         <input
           type="password"
-          class="form-input js-register-password"
+          class="login-form-input js-register-password"
           placeholder="Create password"
           required
         />
       </div>
 
-      <button type="submit" class="form-button">
+      <button type="submit" class="login-form-button">
         Register
       </button>
     </form>
 
-    <p class="success-message js-register-message"></p>
+    <p class="login-success-message js-register-message"></p>
   </section>
   
   </div>
