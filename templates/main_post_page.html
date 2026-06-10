@@ -13,7 +13,7 @@
         </div>
     </section>
     <!-- POSTS CONTAINER -->
-    <section class="main-posts-list-container">
+    <section class="main-posts-list-container js-main-posts-list-container">
 
       {% for c in posts %}
         <article class="main-post-card">
@@ -33,7 +33,7 @@
                        {{c.to_user.username}}
                     </a>
                     <p class="main-post-date">
-                        {{c.date_posted.strftime("%B %d, %Y")}}
+                        {{c.date_posted.strftime("%d %B %Y")}}
                     </p>
 
                 </div>
@@ -42,7 +42,7 @@
             <!-- POST BODY -->
             <div class="main-post-body">
                 <a class="main-post-title-link"
-                   href="{{ url_for('post_page', post_id=c.id ) }}">
+                   href="{{ url_for('single_post_page', post_id=c.id ) }}">
                     <h2 class="main-post-title">
                         {{c.title}}
                     </h2>
@@ -54,8 +54,19 @@
 
         </article>
         {% endfor %}
-
     </section>
-
-</div>
+       {% if has_more %}
+        <div class="load-more-container js-load-more-container">
+            <button class="load-more-button js-load-more">
+                <span class="button-text js-button-text"> Load More Posts </span>
+                <!-- LOADING SPINNER -->
+                <span class="loading-spinner js-loading-spinner hidden-spinner"></span>
+            </button>
+        </div>
+        {% endif %}
+    </div>
 {% endblock content %}
+
+{% block scripts %}
+   <script src="{{url_for("static", path="script/main.js")}}", type="module"></script>
+{% endblock scripts %}

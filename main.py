@@ -14,15 +14,13 @@ from starlette.exceptions import HTTPException as starletteHttpException
 # from fastapi.responses import JSONResponse #
 from fastapi.exceptions import RequestValidationError
 
-from database import Base, engine
+from database import engine
 from Router import users, posts, html_router
   
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-  async with engine.begin() as conn:
-    await conn.run_sync(Base.metadata.create_all)
-
+  
   yield
 
   await engine.dispose()

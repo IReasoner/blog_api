@@ -243,3 +243,234 @@
     }
 
 }
+
+
+/* PASSWORD UPDATING STYLING */
+
+/* ===================================== */
+/* PASSWORD SECTION */
+/* ===================================== */
+
+.change-password-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+
+
+/* DESCRIPTION */
+
+.change-password-description{
+
+    color:#6b7280;
+
+    margin-top: 8px;
+
+}
+/* TOGGLE BUTTON */
+
+.change-password-toggle-button{
+
+    border:none;
+
+    background:#2563eb;
+
+    color:white;
+
+    padding:12px 18px;
+
+    border-radius:12px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.change-password-toggle-button:hover{
+
+    background:#1d4ed8;
+
+}
+
+
+
+/* ===================================== */
+/* DROPDOWN FORM */
+/* ===================================== */
+
+.change-password-container{
+
+    max-height:0;
+
+    overflow:hidden;
+
+    transition:
+    max-height .35s ease,
+    margin-top .35s ease;
+
+}
+
+.change-password-container.show{
+
+    max-height:600px;
+
+    margin-top:25px;
+
+}
+
+/* ===================================== */
+/* FORM */
+/* ===================================== */
+
+.change-password-form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+
+
+/* GROUP */
+
+.change-password-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+
+
+/* INPUT */
+
+.change-password-input{
+
+    height:55px;
+
+    border:1px solid #d1d5db;
+
+    border-radius:14px;
+
+    padding:0 15px;
+
+    outline:none;
+
+    transition:.2s;
+
+}
+
+
+
+.change-password-input:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:
+    0 0 0 4px rgba(37,99,235,.1);
+
+}
+
+
+
+/* ===================================== */
+/* MESSAGE */
+/* ===================================== */
+
+.password-status-message{
+
+    min-height:20px;
+
+    font-size:14px;
+
+    font-weight:500;
+
+}
+
+
+
+/* ERROR */
+
+.password-error{
+
+    color:#dc2626;
+
+}
+
+
+
+/* SUCCESS */
+
+.password-success{
+
+    color:#16a34a;
+
+}
+
+
+
+/* ===================================== */
+/* SUBMIT */
+/* ===================================== */
+
+.change-password-submit-button{
+
+    border:none;
+
+    height:55px;
+
+    border-radius:14px;
+
+    background:#2563eb;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+
+.change-password-submit-button:disabled{
+
+    background:#d1d5db;
+
+    cursor:not-allowed;
+
+}
+
+
+
+/* ===================================== */
+/* MOBILE */
+/* ===================================== */
+
+@media(max-width:700px){
+
+    .change-password-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+}

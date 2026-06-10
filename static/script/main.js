@@ -1,238 +1,116 @@
+import {formatTime} from "../script/utils.js"
 
-import {getCurrentUser, getAcessToken} from "../script/auth.js"
+const loadButton = document.querySelector(".js-load-more");
+const buttonText = document.querySelector(".js-button-text");
+const spinner = document.querySelector(".js-loading-spinner");
 
+if (loadButton) {
+    loadButton.addEventListener("click", () => {
+    loadButton.disabled=true;
+    buttonText.textContent = "Loading...";
+    spinner.classList.remove("hidden-spinner");
+    // Simulate request
+    setTimeout(() => {
+        loadButton.disabled = false;
+        buttonText.textContent= "Load More Posts";
+        spinner.classList.add("hidden-spinner");
+        loadMorePosts()
+    },100);
+});
 
-// ALL DEFINE ELEMENT FOR CREATE POST
-const form = document.querySelector(".js-post-form");
-const homeWrapper = document.querySelector(".js-over-all-wrapper");
-const newPostBtn = document.querySelector(".js-create-new-post");
-const loggedInButton = document.querySelector(".js-login-button");
-const registrationButton = document.querySelector(".js-register-button");
-const userDetail = document.querySelector(".js-user-container");
-const toggle_div = document.querySelector(".js-all-body-pages")
-
-
-// GENERAL CODE
-
-function toggle_edit(element) {
-    if (element.classList.contains("hidden")) {
-      element.classList.remove("hidden")
-      element.classList.add("show-initial")
-    } else {
-      element.classList.remove("show-initial")
-      element.classList.add("hidden")
-    } 
 }
 
-// GENERAL ENDS
+const params = new URLSearchParams(
+    location.search
+)
 
-// CODE FOR CREATING NEW POST
+let currentPage = Number(params.get("page")) || 1
+let size = 5
 
-form.addEventListener("submit", async (event) => {
-  event.preventDefault();
+async function loadMorePosts() {
 
-  const formData = new FormData(form)
-  const dataObj = Object.fromEntries(formData); 
+  currentPage ++;
 
-    const token = getAcessToken()
+  try {
 
-    try {
+    const response = await fetch(`/api/posts?page=${currentPage}&size=${size}`)
 
-    const response = await fetch("/api/posts", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(dataObj)
-    });
-
-      if (!response.ok) {
-        return
-      }
-
-      alert("Post Uploaded")
-      toggle_edit(homeWrapper)
-      form.reset();
-      location.reload()
-
-    } catch(error) {
-       console.log("Something went wrong or check your internet connection")
+    if (!response.ok) {
+      return
     }
-})
 
+    const data = await response.json()
+    loadToPage(data)
 
-document.querySelector(".js-create-new-post").addEventListener("click", () => {
-  toggle_edit(homeWrapper)
-})
+    history.pushState(
+        {},
+        "",
+        `/?page=${currentPage}`
+    )
 
-document.querySelector(".js-cancel-home").addEventListener("click", () => {
-  toggle_edit(homeWrapper)
-})
+    sessionStorage.setItem("home_url", location.href)
 
-
-// ALL DEFINE ELEMENT FOR EDIT POST
-const formedit = document.querySelector(".js-edit-post");
-
-if (formedit) {
-
-const editWrapper = document.querySelector(".js-all-wrapper-edit");
-
-let postID = null
-
-// EDIT POST LOGIC
-// THE BEGIN OF ADVANCE STOPTING OF BAD RUN TWICE AND THREE TIMES
-
-function editPost(id, title, content) {
-
-  toggle_edit(editWrapper)
-  
-  postID = id;
-
-  document.querySelector(".js-title").value = title;
-  document.querySelector(".js-content").value = content;
-
- }
-
- // THIS SHOULD ONLY DEFINE ONE
-
- formedit.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      const formData = new FormData(formedit)
-      const dataObj = Object.fromEntries(formData); 
-
-      const token = getAcessToken()
-
-      try {
-
-      const response = await fetch(`/api/posts/${postID}`, {
-        method: "PATCH",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dataObj)
-      })
-
-      if (!response.ok) {
-        return
-      }
-
-      alert("Post Edited")
-      toggle_edit(editWrapper)
-      formedit.reset();
-      location.reload()
-
-      } catch(error) {
-        console.log("Something went wrong or check your internet connection")
-      }
-  })
-
-  // END OF THE LOGIC
-  document.querySelector(".js-cancel-edit").addEventListener("click", () => {
-    toggle_edit(editWrapper)
-  })
-
-  document.querySelector(".js-edit-button").addEventListener("click", () => {
-    
-    const blogContainer = document.querySelector(".js-blog")
-    const title = blogContainer.querySelector(".js-title-f").innerText;
-    const content = blogContainer.querySelector(".js-content-f").innerText;
-    const postID = blogContainer.dataset.postId;
-    
-    editPost(postID, title, content)
-  })
-
-  document.querySelector(".js-delete-button").addEventListener("click", async () => {
-    const blogContainer = document.querySelector(".js-blog")
-    const postID = blogContainer.dataset.postId;
-
-    const token = getAcessToken()
-
-    try {
-      const response = await fetch(`/api/posts/${postID}`, {
-        method: "DELETE",
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
-     })
-
-      if (!response.ok) {
-        return
-      }
-
-      alert("Post Successfully Deleted")
-      location.href = "/"
-
-    } catch(error) {
-      console.log("Something went wrong, or check your internet connection")
+    if (!data.has_more) {
+      document.querySelector(".js-load-more-container")
+      .classList.add("hidden")
     }
-  })
 
+  } catch(error) {
+    console.log("please check your internet connection")
+    console.log(error)
   }
 
-
-function checkIfUserLogin() {
-
-  const token = localStorage.getItem("access_token")
-
-  if (!token) {
-
-    // HIDING
-    newPostBtn.classList.add("hide")
-    newPostBtn.classList.remove("show-initial")
-
-    userDetail.classList.add("hide")
-    userDetail.classList.remove("show-initial")
-
-    // SHOWING
-    loggedInButton.classList.remove("hide")
-    loggedInButton.classList.add("show-initial")
-
-    registrationButton.classList.remove("hide")
-    registrationButton.classList.add("show-initial")
-
-    if (toggle_div) {
-      toggle_div.style.display = "none"
-    }
-
-   
-
-  } else {
-    // SHOWING
-    newPostBtn.classList.remove("hide")
-    newPostBtn.classList.add("show-initial")
-
-    userDetail.classList.remove("hide")
-    userDetail.classList.add("show-initial")
-
-    // HIDING
-    loggedInButton.classList.add("hide")
-    loggedInButton.classList.remove("show-initial")
-
-    registrationButton.classList.add("hide")
-    registrationButton.classList.remove("show-initial")
-   
-    if (toggle_div) {
-      toggle_div.style.display = "initial"
-    }
-    
-    loadUser()
-  }
 }
 
-checkIfUserLogin()
 
-async function loadUser() {
-  const user = await getCurrentUser()
+function loadToPage(data) {
 
-  if (!user) {
-    console.log("no user")
-    return 
-  }
+  let postJoinHTML = ``;
+  const posts = data.posts;
 
-  document.querySelector(".js-user-img").src = user.image_url
-  document.querySelector(".js-user-email").innerHTML = user.email
-  document.querySelector(".js-user-username").innerHTML = user.username
+  posts.forEach((c) => {
 
+   postJoinHTML += `
+   <article class="main-post-card">
+            <!-- AUTHOR SECTION -->
+            <div class="main-post-author-section">
+                <div class="main-post-author-profile">
+                    <img
+                        class="main-post-author-profile-image"
+                         src="${c.to_user.image_url}"
+                        alt="author profile"
+                    >
+                </div>
+
+                <div class="main-post-author-details">
+                    <a class="main-post-author-name"
+                       href="/user/${c.to_user.id}/posts">
+                       ${c.to_user.username}
+                    </a>
+                    <p class="main-post-date">
+                     ${formatTime(c.date_posted)}
+                    </p>
+                </div>
+            </div>
+
+            <!-- POST BODY -->
+            <div class="main-post-body">
+                <a class="main-post-title-link"
+                   href="/post/${c.id}">
+                    <h2 class="main-post-title">
+                        ${c.title}
+                    </h2>
+                </a>
+                <p class="main-post-content">
+                    ${c.content}
+                </p>
+            </div>
+
+     </article>
+   
+   `;
+  })
+
+
+  document.querySelector(".js-main-posts-list-container").innerHTML += postJoinHTML;
 }

@@ -200,6 +200,126 @@ deleteAccountButton.addEventListener("click", async (e) => {
 })
 
 
+
+
+
+
+
+// PASSWORD UPDATING JS
+
+const togglePasswordButton = document.querySelector(".js-change-password-toggle");
+const passwordContainer = document.querySelector(".js-change-password-container");
+const oldPasswordInput = document.querySelector(".js-old-password");
+const newPasswordInput = document.querySelector(".js-new-password");
+const confirmPasswordInput = document.querySelector(".js-confirm-password");
+const submitPasswordButton = document.querySelector(".js-change-password-submit");
+const passwordStatus = document.querySelector(".js-password-status");
+const changePasswordForm = document.querySelector(".js-change-password-form");
+
+/* ============================= */
+/* TOGGLE FORM */
+/* ============================= */
+
+togglePasswordButton.addEventListener("click", () =>{
+    passwordContainer.classList.toggle(
+        "show"
+    );
+});
+/* ============================= */
+/* VALIDATION */
+/* ============================= */
+
+function validatePasswordForm(){
+
+    const oldPassword = oldPasswordInput.value.trim();
+    const newPassword = newPasswordInput.value.trim();
+    const confirmPassword = confirmPasswordInput.value.trim();
+
+    passwordStatus.textContent = "";
+    passwordStatus.className = "password-status-message";
+
+    if (!oldPassword || !newPassword || !confirmPassword) {
+        submitPasswordButton.disabled = true;
+        return;
+    }
+
+    if (newPassword.length < 5) {
+        passwordStatus.textContent =
+        "Password must be at least 5 characters.";
+        passwordStatus.classList.add("password-error");
+        submitPasswordButton.disabled = true;
+        return;
+    }
+
+    if (newPassword !== confirmPassword) {
+        passwordStatus.textContent = "Passwords do not match.";
+        passwordStatus.classList.add("password-error");
+        submitPasswordButton.disabled = true;
+        return;
+    }
+
+    submitPasswordButton.disabled = false;
+}
+
+
+
+oldPasswordInput.addEventListener("input", validatePasswordForm);
+newPasswordInput.addEventListener("input", validatePasswordForm);
+confirmPasswordInput.addEventListener("input", validatePasswordForm);
+
+/* ============================= */
+/* SUBMIT */
+/* ============================= */
+
+changePasswordForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const token = getAcessToken()
+
+    const formData = new FormData(changePasswordForm)
+
+    const data = {
+      old_password: formData.get("old-password"),
+      new_password: formData.get("confirm-password")
+    }
+
+    try {
+
+      const response = await fetch('/api/users/me/change_password', {
+      method: "PATCH",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+
+      if (!response.ok) {
+        const result = await response.json()
+        console.log(result)
+        passwordStatus.textContent = result.detail;
+        passwordStatus.className = "password-status-message password-error";
+        return
+      }
+
+      const result = await response.json()
+      
+      // passwordStatus.textContent = "Updating password...";
+      passwordStatus.textContent = result.message;
+      passwordStatus.className = "password-status-message password-success";
+
+      oldPasswordInput.value = ""
+      newPasswordInput.value = ""
+      confirmPasswordInput.value = ""
+
+    } catch(error) {
+      console.log(error)
+      console.log("Something went wrong")
+    }
+    // passwordStatus.textContent = "Updating password...";
+    // passwordStatus.className = "password-status-message password-success";
+  });
+
 }
 
 init()

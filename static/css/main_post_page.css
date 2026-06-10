@@ -194,3 +194,158 @@
     }
 
 }
+
+
+
+/* LOAD MORE BUTTON */
+
+/* ===================================== */
+/* LOAD MORE CONTAINER */
+/* ===================================== */
+
+.load-more-container{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    margin:20px 0 10px;
+
+}
+
+
+
+/* ===================================== */
+/* BUTTON */
+/* ===================================== */
+
+.load-more-button{
+
+    min-width:220px;
+
+    height:58px;
+
+    padding:0 28px;
+
+    border:none;
+
+    border-radius:18px;
+
+    background:white;
+
+    color:#111827;
+
+    font-size:15px;
+    font-weight:600;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:12px;
+
+    cursor:pointer;
+
+    border:1px solid #e5e7eb;
+
+    box-shadow:
+    0 8px 25px rgba(0,0,0,.05);
+
+    transition:.25s;
+}
+
+
+
+/* HOVER */
+
+.load-more-button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 14px 30px rgba(0,0,0,.09);
+
+}
+
+
+
+/* CLICK */
+
+.load-more-button:active{
+
+    transform:scale(.98);
+
+}
+
+
+
+/* DISABLED */
+
+.load-more-button:disabled{
+
+    cursor:not-allowed;
+
+    opacity:.7;
+}
+
+
+
+/* ===================================== */
+/* SPINNER */
+/* ===================================== */
+
+.loading-spinner{
+
+    width:18px;
+
+    height:18px;
+
+    border:2px solid #d1d5db;
+
+    border-top:2px solid #2563eb;
+
+    border-radius:50%;
+
+    animation:spin .8s linear infinite;
+
+}
+
+.hidden-spinner{
+
+    display:none;
+
+}
+/* SPIN ANIMATION */
+
+@keyframes spin{
+
+    from{
+        transform:rotate(0deg);
+    }
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+
+
+/* ===================================== */
+/* MOBILE */
+/* ===================================== */
+
+@media(max-width:600px){
+
+    .load-more-button{
+
+        width:100%;
+        max-width:300px;
+
+    }
+
+}

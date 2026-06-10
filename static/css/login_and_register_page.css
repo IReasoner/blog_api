@@ -71,6 +71,70 @@
       font-size: 14px;
     }
 
+    /* ================================= */
+/* FORGOT PASSWORD */
+/* ================================= */
+
+.login-forgot-wrapper {
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  margin-top: -8px;
+
+  margin-bottom: 18px;
+
+}
+
+.login-forgot-link {
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  color: #2563eb;
+
+  transition: 0.2s;
+
+}
+
+.login-forgot-link:hover {
+
+  color: #1d4ed8;
+
+  text-decoration: underline;
+
+}
+
+.login-register-text {
+
+  margin-top: 20px;
+
+  text-align: center;
+
+  font-size: 14px;
+
+  color: #6b7280;
+
+}
+
+.login-register-link {
+
+  color: #2563eb;
+
+  text-decoration: none;
+
+  font-weight: 600;
+
+}
+
+.login-register-link:hover {
+
+  text-decoration: underline;
+
+}
+
     @media (max-width: 500px) {
       body {
         padding: 20px;

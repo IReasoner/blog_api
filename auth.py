@@ -1,9 +1,12 @@
 import jwt
+import secrets
+import hashlib
 from datetime import datetime, timedelta, timezone
 from fastapi.security import OAuth2PasswordBearer
 from pwdlib import PasswordHash
 from fastapi import HTTPException, Depends, status
 from typing import Annotated
+
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -27,6 +30,16 @@ def hash_password(password: str):
 
 def verify_password(plain_password: str, hashed_password: str):
   return password_hash.verify(plain_password, hashed_password)
+
+
+# RESET TOKEN LOGIC
+def create_reset_token() -> str:
+  return secrets.token_urlsafe(32)
+
+
+def hash_reset_token(token: str) -> str:
+  return hashlib.sha256(token.encode()).hexdigest()
+
 
 # AUTHENTICATION LOGIC
 
@@ -79,13 +92,14 @@ async def get_current_user(
       detail="Invalid or expired token"
       )
   
-  # try:
-  #   user_id = int(user_id)
-  # except(TypeError, ValueError):
-  #   raise HTTPException(
-  #     status_code=status.HTTP_401_UNAUTHORIZED, 
-  #     detail="Invalid or expired token"
-  #     )
+  # NEED TO STUDY THIS PART
+  try:
+    user_id = int(user_id)
+  except(TypeError, ValueError):
+    raise HTTPException(
+      status_code=status.HTTP_401_UNAUTHORIZED, 
+      detail="Invalid or expired token"
+      )
   
   result = await db.execute(select(User).where(User.id == user_id))
   user = result.scalar_one_or_none()
@@ -94,3 +108,4 @@ async def get_current_user(
 
 
 currentUser = Annotated[User, Depends(get_current_user)]
+

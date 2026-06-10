@@ -1,12 +1,14 @@
-from fastapi import HTTPException, status, Depends, APIRouter
+from fastapi import HTTPException, status, Depends, APIRouter, Query
 from typing import Annotated
+from math import ceil
 
 from database import get_db
 from models import Post
-from sqlalchemy import select
+from sqlalchemy import select, func
+from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from schemas import PostCreate, PostResponse, PostUpdate
+from schemas import PostCreate, PostResponse, PostUpdate, PaginatedPostResponse
 from auth import currentUser
 
 
@@ -43,7 +45,10 @@ async def update_post(
   post = result.scalar_one_or_none()
 
   if post is None:
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Post not found")
+    raise HTTPException(
+      status_code=status.HTTP_404_NOT_FOUND, 
+      detail="Post not found"
+      )
   
 
   if current_user.id != post.user_id:
@@ -70,11 +75,18 @@ async def delete_post(
   db: Annotated[AsyncSession, Depends(get_db)]
   ):
 
-  result = await db.execute(select(Post).where(Post.id == post_id))
+  result = await db.execute(
+    select(Post)
+    .where(Post.id == post_id)
+    )
+  
   post = result.scalar_one_or_none()
 
   if post is None:
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Post not found")
+    raise HTTPException(
+      status_code=status.HTTP_404_NOT_FOUND, 
+      detail="Post not found"
+      )
   
   if current_user.id != post.user_id:
     raise HTTPException(
@@ -88,21 +100,63 @@ async def delete_post(
   
 
   
-@router.get("", response_model=list[PostResponse]) 
-async def get_posts(db: Annotated[AsyncSession, Depends(get_db)]):
+@router.get("", response_model=PaginatedPostResponse) 
+async def get_posts(
+  db: Annotated[AsyncSession, Depends(get_db)],
+  page: Annotated[int, Query(ge=1)] = 1,
+  size: Annotated[int, Query(ge=5, le=10)] = 5
+  ):
 
-  result = await db.execute(select(Post).order_by(Post.date_posted.desc()))
+  statement = await db.execute(
+    select(func.count(Post.id))
+  )
+
+  total = statement.scalar() or 0
+
+  skip = (page - 1) * size
+  total_page = ceil(total / size)
+
+  has_more = page < total_page
+
+  result = await db.execute(
+    select(Post)
+    .options(selectinload(Post.to_user))
+    .order_by(Post.date_posted.desc())
+    .offset(skip)
+    .limit(size)
+    )
+  
   posts = result.scalars().all()
 
-  return posts
+  return PaginatedPostResponse(
+    posts=[PostResponse.model_validate(post) for post in posts],
+    total=total,
+    total_page=total_page,
+    skip=skip,
+    size=size,
+    has_more=has_more
+  )
+    
 
 @router.get("/{post_id}", response_model=PostResponse)
-async def get_post(post_id: int, db: Annotated[AsyncSession, Depends(get_db)]):
+async def get_particular_post(
+  post_id: int, 
+  db: Annotated[AsyncSession, Depends(get_db)]
+  ):
 
-  result = await db.execute(select(Post).where(Post.id == post_id).order_by(Post.date_posted.desc()))
+  result = await db.execute(
+    select(Post)
+    .options(selectinload(Post.to_user))
+    .where(Post.id == post_id)
+    .order_by(Post.date_posted.desc())
+    )
+  
   post = result.scalars().first()
   
   if post:
     return post
     
-  raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Post not found",)
+  raise HTTPException(
+    status_code=status.HTTP_404_NOT_FOUND, 
+    detail="Post not found"
+    )

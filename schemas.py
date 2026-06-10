@@ -57,6 +57,23 @@ class PostResponse(BaseModel):
 
   model_config = ConfigDict(from_attributes=True)
 
+
+class PaginatedPostResponse(BaseModel):
+  posts: list[PostResponse]
+  total: int
+  total_page: int
+  skip: int
+  size: int
+  has_more: bool
   
 
-  
+class ForgotPassword(BaseModel):
+  email: EmailStr
+
+class ResetPassword(BaseModel):
+  token: str
+  password: str = Field(..., min_length=5)
+
+class ChangePassword(BaseModel):
+  old_password: str = Field(..., min_length=5)
+  new_password: str = Field(..., min_length=5)

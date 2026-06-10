@@ -29,3 +29,100 @@ from schemas import (
   UpdateUser, UserUpdateResponse, 
   PostUpdate
   )
+
+
+oduleDefinition(s, o) {
+    "object" == typeof exports && "object" == typeof module ? module.exports = o() : "function" == typeof define && define.amd ? define([], o) : "object" == typeof exports ? exports.SwaggerUIBundle = o() : s.SwaggerUIBundle = o()
+}(this, ( () => ( () => {
+    var s = {
+        67526(s, o) {
+            "use strict";
+            o.byteLength = function byteLength(s) {
+                var o = getLens(s)
+                  , i = o[0]
+                  , a = o[1];
+                return 3 * (i + a) / 4 - a
+            }
+            ,
+            o.toByteArray = function toByteArray(s) {
+                var o, i, _ = getLens(s), w = _[0], x = _[1], C = new u(function _byteLength(s, o, i) {
+                    return 3 * (o + i) / 4 - i
+                }(0, w, x)), j = 0, L = x > 0 ? w - 4 : w;
+                for (i = 0; i < L; i += 4)
+                    o = a[s.charCodeAt(i)] << 18 | a[s.charCodeAt(i + 1)] << 12 | a[s.charCodeAt(i + 2)] << 6 | a[s.charCodeAt(i + 3)],
+                    C[j++] = o >> 16 & 255,
+                    C[j++] = o >> 8 & 255,
+                    C[j++] = 255 & o;
+                2 === x && (o = a[s.charCodeAt(i)] << 2 | a[s.charCodeAt(i + 1)] >> 4,
+                C[j++] = 255 & o);
+                1 === x && (o = a[s.charCodeAt(i)] << 10 | a[s.charCodeAt(i + 1)] << 4 | a[s.charCodeAt(i + 2)] >> 2,
+                C[j++] = o >> 8 & 255,
+                C[j++] = 255 & o);
+                return C
+            }
+            ,
+            o.fromByteArray = function fromByteArray(s) {
+                for (var o, a = s.length, u = a % 3, _ = [], w = 16383, x = 0, C = a - u; x < C; x += w)
+                    _.push(encodeChunk(s, x, x + w > C ? C : x + w));
+                1 === u ? (o = s[a - 1],
+                _.push(i[o >> 2] + i[o << 4 & 63] + "==")) : 2 === u && (o = (s[a - 2] << 8) + s[a - 1],
+                _.push(i[o >> 10] + i[o >> 4 & 63] + i[o << 2 & 63] + "="));
+                return _.join("")
+            }
+            ;
+            for (var i = [], a = [], u = "undefined" != typeof Uint8Array ? Uint8Array : Array, _ = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", w = 0; w < 64; ++w)
+                i[w] = _[w],
+                a[_.charCodeAt(w)] = w;
+            function getLens(s) {
+                var o = s.length;
+                if (o % 4 > 0)
+                    throw new Error("Invalid string. Length must be a multiple of 4");
+                var i = s.indexOf("=");
+                return -1 === i && (i = o),
+                [i, i === o ? 0 : 4 - i % 4]
+            }
+            function encodeChunk(s, o, a) {
+                for (var u, _, w = [], x = o; x < a; x += 3)
+                    u = (s[x] << 16 & 16711680) + (s[x + 1] << 8 & 65280) + (255 & s[x + 2]),
+                    w.push(i[(_ = u) >> 18 & 63] + i[_ >> 12 & 63] + i[_ >> 6 & 63] + i[63 & _]);
+                return w.join("")
+            }
+            a["-".charCodeAt(0)] = 62,
+            a["_".charCodeAt(0)] = 63
+        },
+        48287(s, o, i) {
+            "use strict";
+            const a = i(67526)
+              , u = i(251)
+              , _ = "function" == typeof Symbol && "function" == typeof Symbol.for ? Symbol.for("nodejs.util.inspect.custom") : null;
+            o.Buffer = Buffer,
+            o.SlowBuffer = function SlowBuffer(s) {
+                +s != s && (s = 0);
+                return Buffer.alloc(+s)
+            }
+            ,
+            o.INSPECT_MAX_BYTES = 50;
+            const w = 2147483647;
+            function createBuffer(s) {
+                if (s > w)
+                    throw new RangeError('The value "' + s + '" is invalid for option "size"');
+                const o = new Uint8Array(s);
+                return Object.setPrototypeOf(o, Buffer.prototype),
+                o
+            }
+            function Buffer(s, o, i) {
+                if ("number" == typeof s) {
+                    if ("string" == typeof o)
+                        throw new TypeError('The "string" argument must be of type string. Received type number');
+                    return allocUnsafe(s)
+                }
+                return from(s, o, i)
+            }
+            function from(s, o, i) {
+                if ("string" == typeof s)
+                    return function fromString(s, o) {
+                        "string" == typeof o && "" !== o || (o = "utf8");
+                        if (!Buffer.isEncoding(o))
+                            throw new TypeError("Unknown encoding: " + o);
+                        const i = 0 | byteLength(s, o);
+                        let a = createBuffer(

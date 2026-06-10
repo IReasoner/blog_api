@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="{{url_for("static", path="css/single_post_page.css")}}">
     <link rel="stylesheet" href="{{url_for("static", path="css/login_and_register_page.css")}}">
     <link rel="stylesheet" href="{{url_for("static", path="css/error_page.css")}}">
+    <link rel="stylesheet" href="{{url_for("static", path="css/forgot_password_page.css")}}">
+    <link rel="stylesheet" href="{{url_for("static", path="css/reset_password_page.css")}}">
 </head>
 <body>
   
@@ -25,17 +27,17 @@
     <!-- LEFT -->
     <div class="header-left">
         <a href="{{url_for('home')}}"
-            class="logo-link-header">
+            class="logo-link-header js-logo-home">
             IREASONER PRACTICE
         </a>
     </div>
     <!-- CENTER -->
 
-    <nav class="header-center">
-        <a href="{{url_for('home')}}" class="nav-link-header">
+    <!-- <nav class="header-center">
+        <a href="{{url_for('home')}}" class="nav-link-header js-tag-home">
             Home
         </a>
-    </nav>
+    </nav> -->
 
     <!-- RIGHT -->
 
@@ -146,7 +148,8 @@
         </div>
     </div>
 
-<script src="{{url_for("static", path="script/main.js")}}", type="module"></script>
+<script src="{{url_for("static", path="script/layout.js")}}", type="module"></script>
 
+    {% block scripts %} {% endblock scripts %}
 </body>
 </html>

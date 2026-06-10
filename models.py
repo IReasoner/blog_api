@@ -23,7 +23,17 @@ class User(Base):
       return f"/media/profile_pics/{self.image_file}"
     return f"/media/profile_pics/default.jpeg"
 
-  to_post: Mapped[list[Post]] = relationship("Post", back_populates="to_user", cascade="all, delete-orphan")
+  to_post: Mapped[list[Post]] = relationship(
+    "Post", 
+    back_populates="to_user", 
+    cascade="all, delete-orphan"
+    )
+
+  to_reset_password: Mapped[ResetPasswordToken] = relationship(
+    "ResetPasswordToken",
+    back_populates="to_user",
+    cascade="all, delete-orphan"
+  )
   
 class Post(Base):
   __tablename__ = "posts"
@@ -40,3 +50,19 @@ class Post(Base):
 
   to_user: Mapped[User] = relationship("User", back_populates="to_post")
   
+class ResetPasswordToken(Base):
+  __tablename__ = "reset_Password_tokens"
+
+  id: Mapped[int] = mapped_column(Integer, primary_key=True)
+  user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=False)
+  token_hash: Mapped[str] = mapped_column(String, nullable=False, unique=True)
+  created_at: Mapped[datetime] = mapped_column(
+    DateTime(timezone=True),
+    default=lambda: datetime.now(UTC)
+    )
+  expires_at: Mapped[datetime] = mapped_column(
+    DateTime(timezone=True),
+    nullable=False
+  )
+
+  to_user: Mapped[User] = relationship("User", back_populates="to_reset_password")
