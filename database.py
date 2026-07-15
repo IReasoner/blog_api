@@ -4,7 +4,10 @@ from config import settings
 
 DATABASE_URL = settings.database_url
 
-engine = create_async_engine(DATABASE_URL, echo=True)
+engine = create_async_engine(
+  DATABASE_URL, 
+  echo=settings.debug
+  )
 
 AsyncSessionLocal = async_sessionmaker(
   bind=engine, 

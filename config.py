@@ -13,6 +13,7 @@ class Settings(BaseSettings):
   frontend_url: str
   database_url: str
   test_database_url: str
+  debug: bool
 
   aws_access_key_id: str
   aws_secret_access_key: str

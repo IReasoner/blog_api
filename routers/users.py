@@ -316,11 +316,11 @@ async def update_user_profile(
       status_code=status.HTTP_408_REQUEST_TIMEOUT,
       detail="Unable to upload image"
       )
-  # except Exception:
-  #   raise HTTPException(
-  #     status_code=status.HTTP_408_REQUEST_TIMEOUT,
-  #     detail="Unable to upload image"
-  #     )
+  except Exception:
+    raise HTTPException(
+      status_code=status.HTTP_408_REQUEST_TIMEOUT,
+      detail="Unable to upload image"
+      )
   
 
   old_filename = current_user.image_file  
