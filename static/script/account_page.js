@@ -67,6 +67,8 @@ imageInput.addEventListener("change", () => {
 
   try {
 
+    uploadImageButton.innerText = "Uploading...";
+
     const response = await fetch(`/api/users/${currentUserId}/picture`, {
     method: "PATCH",
     headers: {
@@ -76,10 +78,13 @@ imageInput.addEventListener("change", () => {
     })
 
     if (!response.ok) {
-
-      console.log(await response.json())
+      const response = await response.json()
+      alert(response.detail)
+      uploadImageButton.innerText = "Upload Image"
       return
     }
+
+    
 
     alert("Profile image changed succefully")
     location.reload()
@@ -87,6 +92,7 @@ imageInput.addEventListener("change", () => {
   } catch(error) {
     console.log("Please check your internet connection")
     alert("Please check your internet connection")
+    return
   }
   
 

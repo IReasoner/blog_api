@@ -11,6 +11,8 @@ from starlette.concurrency import run_in_threadpool
 from config import settings
 from PIL import UnidentifiedImageError
 from email_utils import send_reset_email
+from s3_service import upload_profile_picture, delete_profile_picture
+from botocore.exceptions import ClientError
 
 
 from schemas import (
@@ -35,7 +37,7 @@ from auth import (
   )
 
 from fastapi.security import OAuth2PasswordRequestForm
-from image_utils import delete_profile_image, image_processing
+from image_utils import image_processing
 
 
 router = APIRouter()
@@ -62,10 +64,10 @@ async def user_login(
     plain_password=form_data.password, 
     hashed_password=user.passwordhash
     ):
-    raise HTTPException(
-      status_code=status.HTTP_401_UNAUTHORIZED, 
-      detail="Invalid Credentials"
-      )
+        raise HTTPException(
+          status_code=status.HTTP_401_UNAUTHORIZED, 
+          detail="Invalid Credentials"
+          )
   
   data = {
     "sub": str(user.id)
@@ -113,7 +115,7 @@ async def create_user(
   if existing_email:
     raise HTTPException(
       status_code=status.HTTP_400_BAD_REQUEST, 
-      detail="Email already exist"
+      detail="email already exist"
       )
 
   hashed_password = hash_password(password=user.password)
@@ -126,7 +128,7 @@ async def create_user(
   
   db.add(new_user)
   await db.commit()
-  await db.refresh(new_user, attribute_names=["to_post"])
+  await db.refresh(new_user)
 
   return new_user
 
@@ -149,7 +151,7 @@ async def update_user(
   if data.username:
     result = await db.execute(
       select(User)
-      .where(User.id == user_id)
+      .where(User.username == data.username)
       )
     
     user = result.scalars().first()
@@ -163,12 +165,18 @@ async def update_user(
       
 
   if data.email:
-    result = await db.execute(select(User).where(User.id == user_id)) 
+    result = await db.execute(
+      select(User)
+      .where(User.email == data.email)
+      ) 
     user = result.scalars().first()
 
     if user is not None:
       if user.email.lower() != current_user.email.lower():
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="email already exist")
+        raise HTTPException(
+          status_code=status.HTTP_400_BAD_REQUEST, 
+          detail="email already exist"
+          )
 
  
   data_list = data.model_dump(exclude_unset=True)
@@ -177,13 +185,20 @@ async def update_user(
     setattr(current_user, key, value)
 
   await db.commit()
-  await db.refresh(current_user, attribute_names=["to_post"])
+  await db.refresh(current_user)
 
   return current_user
 
 # DELETE EXISTING USER
-@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_user(user_id: int, current_user: currentUser, db: Annotated[AsyncSession, Depends(get_db)]):
+@router.delete(
+    "/{user_id}", 
+    status_code=status.HTTP_204_NO_CONTENT
+    )
+async def delete_user(
+  user_id: int, 
+  current_user: currentUser, 
+  db: Annotated[AsyncSession, Depends(get_db)]
+  ):
 
   if current_user.id != user_id:
       raise HTTPException(
@@ -196,8 +211,8 @@ async def delete_user(user_id: int, current_user: currentUser, db: Annotated[Asy
   await db.delete(current_user)
   await db.commit()
 
-  if old_filename:
-    delete_profile_image(old_filename)
+  
+  await delete_profile_picture(old_filename)
 
 
 # GET USERS ALL POST
@@ -215,7 +230,7 @@ async def get_user_post(
     .where(User.id == user_id)
     )
   
-  user = result.scalars().first()
+  user = result.scalar_one_or_none()
 
   if user is None:
     raise HTTPException(
@@ -223,13 +238,13 @@ async def get_user_post(
       detail="user not found"
       )
   
-  all_get = await db.execute(
+  stmt = await db.execute(
     select(Post)
     .options(selectinload(Post.to_user))
     .where(Post.user_id == user_id)
     )
   
-  all_post = all_get.scalars().all()
+  all_post = stmt.scalars().all()
 
   return all_post
 
@@ -285,7 +300,7 @@ async def update_user_profile(
   
 
   try:
-    filename = await run_in_threadpool(image_processing, content)
+    output, filename = await run_in_threadpool(image_processing, content)
   except UnidentifiedImageError:
     raise HTTPException(
       status_code=status.HTTP_400_BAD_REQUEST,
@@ -294,6 +309,19 @@ async def update_user_profile(
   except Exception:
     raise
 
+  try:
+   await upload_profile_picture(output, filename)
+  except ClientError:
+    raise HTTPException(
+      status_code=status.HTTP_408_REQUEST_TIMEOUT,
+      detail="Unable to upload image"
+      )
+  # except Exception:
+  #   raise HTTPException(
+  #     status_code=status.HTTP_408_REQUEST_TIMEOUT,
+  #     detail="Unable to upload image"
+  #     )
+  
 
   old_filename = current_user.image_file  
   
@@ -302,7 +330,7 @@ async def update_user_profile(
   await db.commit()
   await db.refresh(current_user, attribute_names=["to_post"])
 
-  delete_profile_image(old_filename)
+  await delete_profile_picture(old_filename)
 
   return current_user
 
@@ -338,7 +366,7 @@ async def delete_user_profile(
   await db.commit()
   await db.refresh(current_user, attribute_names=["to_post"])
 
-  delete_profile_image(old_filename)
+  await delete_profile_picture(old_filename)
 
   return current_user
 

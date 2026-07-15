@@ -5,6 +5,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime, UTC
 
 from database import Base
+from config import settings as st
 
 
 class User(Base):
@@ -15,13 +16,12 @@ class User(Base):
   email: Mapped[str] = mapped_column(String, nullable=False, unique=True)
   passwordhash: Mapped[str] = mapped_column(String)
   image_file: Mapped[str | None] = mapped_column(String, nullable=True, default=None)
-
   
   @property
   def image_url(self):
     if self.image_file:
-      return f"/media/profile_pics/{self.image_file}"
-    return f"/media/profile_pics/default.jpeg"
+      return f"https://{st.aws_bucket_name}.s3.{st.aws_region_name}.amazonaws.com/profile_pics/{self.image_file}"
+    return f"/static/profile_pics/default.jpeg"
 
   to_post: Mapped[list[Post]] = relationship(
     "Post", 

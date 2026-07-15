@@ -3,9 +3,7 @@ from io import BytesIO
 from pathlib import Path
 import uuid
 
-PROFILE_PICS_DIR = Path("media/profile_pics")
-
-def image_processing(content: bytes) -> str:
+def image_processing(content: bytes) -> tuple:
   with Image.open(BytesIO(content)) as Original:
     img = ImageOps.exif_transpose(Original)
 
@@ -16,24 +14,15 @@ def image_processing(content: bytes) -> str:
    img = img.convert("RGB")
 
   filename = f"{uuid.uuid4().hex}.jpg"
-  filepath = PROFILE_PICS_DIR / filename
 
-  PROFILE_PICS_DIR.mkdir(parents=True, exist_ok=True)
-
-  img.save(filepath, "JPEG", quality=85, optimize=True)
-
-
-  return filename
+  output = BytesIO()
+  img.save(output, "JPEG", quality=85, optimize=True)
+  output.seek(0)
 
 
-def delete_profile_image(filename: str | None) -> None:
+  return output, filename
 
-  if filename is None:
-    return
-  
-  filepath = PROFILE_PICS_DIR / filename
-  if filepath.exists():
-    filepath.unlink()
+
 
 
 

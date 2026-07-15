@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
   secret_key: str
@@ -12,10 +12,17 @@ class Settings(BaseSettings):
   email_port: int
   frontend_url: str
   database_url: str
+  test_database_url: str
+
+  aws_access_key_id: str
+  aws_secret_access_key: str
+  aws_region_name: str
+  aws_bucket_name: str
 
 
-  class Config:
-    env_file = ".env"
+  model_config = SettingsConfigDict(
+    env_file=".env"
+  )
 
 
 
