@@ -10,8 +10,8 @@ from sqlalchemy.orm import selectinload
 from starlette.concurrency import run_in_threadpool
 from config import settings
 from PIL import UnidentifiedImageError
-from email_utils import send_reset_email
-from s3_service import upload_profile_picture, delete_profile_picture
+from services.email_utils import send_reset_email
+from services.s3_service import upload_profile_picture, delete_profile_picture
 from botocore.exceptions import ClientError
 
 
@@ -37,7 +37,7 @@ from auth import (
   )
 
 from fastapi.security import OAuth2PasswordRequestForm
-from image_utils import image_processing
+from services.image_utils import image_processing
 
 
 router = APIRouter()
