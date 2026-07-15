@@ -9,3 +9,20 @@ wheels/
 # Virtual environments
 .venv
 .env
+
+
+# Ai recommended
+
+# Testing
+.pytest_cache/
+
+# Alembic
+alembic/__pycache__/
+
+# IDE
+.vscode/
+.idea/
+
+# Operating system
+.DS_Store
+Thumbs.db

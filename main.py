@@ -15,7 +15,7 @@ from starlette.exceptions import HTTPException as starletteHttpException
 from fastapi.exceptions import RequestValidationError
 
 from database import engine
-from Router import users, posts, html_router
+from routers import users, posts, html_router
   
 
 @asynccontextmanager
