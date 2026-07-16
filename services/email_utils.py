@@ -33,6 +33,16 @@ async def send_reset_email(user_email, username, token):
 
   message.add_alternative(html_content, subtype="html")
 
+  import socket
+
+  print("HOST:", settings.email_host)
+  print("PORT:", settings.email_port)
+
+  try:
+      print(socket.getaddrinfo(settings.email_host, settings.email_port))
+  except Exception as e:
+      print("DNS ERROR:", e)
+
   await aiosmtplib.send(
     message,
     hostname=settings.email_host,
